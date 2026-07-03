@@ -84,12 +84,6 @@ Preinstalled under `~/.config/k9s/plugins/`:
 - Aliases: `k` → `kubectl`, `t` → `talosctl`
 - Homebrew and `~/.bun/bin` on `PATH` (visible to the VS Code Server extension host)
 
-### Pre-set environment variables
-
-| Variable | Default |
-| --- | --- |
-| `KUBECONFIG` | `/workspace/.vscode/current/kubeconfig` |
-| `TALOSCONFIG` | `/workspace/.vscode/current/talosconfig` |
 
 ### Exposed ports
 
