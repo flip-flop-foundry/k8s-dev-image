@@ -145,10 +145,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # `type=semver` strips the leading "v" so tags are e.g. 1.0.0, 1.0.
+          # `latest` is added automatically by the default `latest=auto` flavor
+          # for semver tags, so we don't need type=raw,value=latest.
           tags: |
             type=semver,pattern={{version}},value=${{ needs.version.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ needs.version.outputs.version }}
-            type=raw,value=latest
 
       - name: Create manifest list and push
         working-directory: /tmp/digests
@@ -157,8 +159,9 @@ jobs:
             $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
 
       - name: Inspect image
+        # Use the metadata action's version output (already normalized without "v")
         run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}
+          docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -166,8 +169,8 @@ jobs:
           tag_name: ${{ needs.version.outputs.version }}
           name: Release ${{ needs.version.outputs.version }}
           body: |
-            Multi-arch (linux/amd64, linux/arm64) image published to:
-            - `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}`
+            Multi-arFch (linux/amd64, linux/arm64) image published to:
+            - `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}`
             - `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest`
           draft: false
           prerelease: false
