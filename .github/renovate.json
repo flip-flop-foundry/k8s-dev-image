@@ -6,7 +6,7 @@
     ":dependencyDashboard"
   ],
   "labels": ["dependencies"],
-  "schedule": ["before 6am on the first day of the month"],
+  "schedule": ["before 6pm on the last monday of the month"],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "packageRules": [
@@ -16,12 +16,12 @@
       "extractVersion": "^v?(?<version>.+)$"
     },
     {
-      "description": "Group all versions.env tool bumps into a single monthly PR",
+      "description": "Group all versions.env tool bumps into a single monthly PR on the last Monday of the month",
       "matchFileNames": ["repoBootstrapFiles/versions.env"],
       "groupName": "k8s-dev-image tools",
       "groupSlug": "k8s-dev-image-tools",
       "commitMessageTopic": "k8s-dev-image tools",
-      "schedule": ["before 3pm on the first monday of the month"]
+      "schedule": ["before 6pm on the last monday of the month"]
     }
   ],
   "customManagers": [
