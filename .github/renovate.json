@@ -25,6 +25,11 @@
       "separateMultipleMajor": false,
       "separateMinorPatch": false,
       "schedule": ["* 18 25 * *"]
+    },
+    {
+      "description": "Pin helm to v3.x for now (v4 introduces breaking changes)",
+      "matchDepNames": ["helm/helm"],
+      "allowedVersions": "<4.0.0"
     }
   ],
   "customManagers": [
