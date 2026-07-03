@@ -16,11 +16,14 @@
       "extractVersion": "^v?(?<version>.+)$"
     },
     {
-      "description": "Group all versions.env tool bumps into a single monthly PR (opened on the 25th, in the 18:00 UTC hour)",
-      "matchFileNames": ["repoBootstrapFiles/versions.env"],
+      "description": "Group ALL versions.env tool bumps (including majors) into a single monthly PR",
+      "matchManagers": ["custom.regex"],
       "groupName": "k8s-dev-image tools",
       "groupSlug": "k8s-dev-image-tools",
       "commitMessageTopic": "k8s-dev-image tools",
+      "separateMajorMinor": false,
+      "separateMultipleMajor": false,
+      "separateMinorPatch": false,
       "schedule": ["* 18 25 * *"]
     }
   ],
