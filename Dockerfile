@@ -31,12 +31,11 @@ COPY repoBootstrapFiles/ /repoBootstrapFiles/
 RUN chown -R vscode:vscode /repoBootstrapFiles \
     && chmod +x /repoBootstrapFiles/*.sh
 
-# Configure sudo for vscode user to run without password (required for Homebrew installer in QEMU/ARM64)
-RUN echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/vscode && chmod 0440 /etc/sudoers.d/vscode
-
+# The base image's vscode user already has passwordless sudo. Install Homebrew
+# as vscode (the installer refuses to run as root outside of certain CI markers,
+# and the standard approach is to run as a non-root user with sudo access).
 USER vscode
 
-# Install Homebrew as non-root user with sudo (works reliably with QEMU emulation in CI)
 RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Setup Homebrew in shell
