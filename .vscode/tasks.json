@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "shell": {
+    // Use zsh as the default shell for tasks, and loads the user's zsh configuration file (.zshrc) for interactive tasks.
+      "executable": "/bin/zsh",
+      "args": ["-i", "-c"] 
+    }
+  },
+  "tasks": [
+    {
+      "label": "Docker: Build (with cache)",
+      "type": "shell",
+      "command": "docker build -t talos-bootstrapper-dev-image:latest .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Build (no cache)",
+      "type": "shell",
+      "command": "docker build --no-cache -t talos-bootstrapper-dev-image:latest .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
