@@ -30,12 +30,15 @@ COPY repoBootstrapFiles/ /repoBootstrapFiles/
 RUN chown -R vscode:vscode /repoBootstrapFiles \
     && chmod +x /repoBootstrapFiles/*.sh
 
-USER vscode
-
-
-# Install Homebrew
+# Install Homebrew as root (required for ARM64 emulation in CI)
 RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+# Give vscode user ownership of Homebrew
+RUN chown -R vscode:vscode /home/linuxbrew
+
+USER vscode
+
+# Setup Homebrew in shell
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> /home/vscode/.bashrc \
     && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
 
