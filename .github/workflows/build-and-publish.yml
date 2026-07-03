@@ -23,20 +23,27 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.calc.outputs.version }}
+    permissions:
+      contents: read
     steps:
       - name: Calculate version
         id: calc
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [[ -n "${{ inputs.version }}" ]]; then
             VERSION="${{ inputs.version }}"
           else
+            # Look up the latest GitHub release tag (created by the previous
+            # successful build). This is more reliable than parsing ghcr.io
+            # tags, which get stripped of their "v" prefix by metadata-action.
             LATEST_TAG=$(
-              curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                "https://ghcr.io/v2/${{ env.IMAGE_NAME }}/tags/list" 2>/dev/null \
-                | grep -o '"v[0-9]*\.[0-9]*\.[0-9]*"' \
-                | tr -d '"' \
+              gh api "/repos/${{ github.repository }}/releases" \
+                --jq '.[] | .tag_name' 2>/dev/null \
+                | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
                 | sort -V \
-                | tail -1 || echo ""
+                | tail -1 \
+                || echo ""
             )
             if [[ -z "$LATEST_TAG" ]]; then
               VERSION="v1.0.0"
@@ -48,7 +55,8 @@ jobs:
             fi
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Building version: $VERSION"
+          echo "Latest release tag: ${LATEST_TAG:-none}"
+          echo "Building version:   $VERSION"
 
   # ---------------------------------------------------------------------------
   # Build each platform natively (no QEMU emulation). Each job pushes a
