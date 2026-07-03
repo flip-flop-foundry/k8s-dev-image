@@ -1,0 +1,38 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":dependencyDashboard"
+  ],
+  "labels": ["dependencies"],
+  "schedule": ["before 6am on the first day of the month"],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "packageRules": [
+    {
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["github-releases", "github-tags"],
+      "extractVersion": "^v?(?<version>.+)$"
+    },
+    {
+      "description": "Group all versions.env tool bumps into a single monthly PR",
+      "matchFileNames": ["repoBootstrapFiles/versions.env"],
+      "groupName": "k8s-dev-image tools",
+      "groupSlug": "k8s-dev-image-tools",
+      "commitMessageTopic": "k8s-dev-image tools",
+      "schedule": ["before 3pm on the first monday of the month"]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump tool versions in repoBootstrapFiles/versions.env",
+      "managerFilePatterns": ["/repoBootstrapFiles/versions\\.env$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)( versioning=(?<versioning>[^\\s]+))?\\s+export\\s+[A-Z_]+_VERSION=(?<currentValue>\\S+)"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    }
+  ]
+}
