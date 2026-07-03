@@ -27,16 +27,17 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 COPY repoBootstrapFiles/ /repoBootstrapFiles/
 
+
 RUN chown -R vscode:vscode /repoBootstrapFiles \
     && chmod +x /repoBootstrapFiles/*.sh
 
-# Install Homebrew as root (required for ARM64 emulation in CI)
-RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Give vscode user ownership of Homebrew
-RUN chown -R vscode:vscode /home/linuxbrew
+# Configure sudo for vscode user to run without password (required for Homebrew installer in QEMU/ARM64)
+RUN echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/vscode && chmod 0440 /etc/sudoers.d/vscode
 
 USER vscode
+
+# Install Homebrew as non-root user with sudo (works reliably with QEMU emulation in CI)
+RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Setup Homebrew in shell
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> /home/vscode/.bashrc \
