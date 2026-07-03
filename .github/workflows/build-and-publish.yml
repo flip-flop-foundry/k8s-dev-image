@@ -119,7 +119,7 @@ jobs:
     needs: [version, build]
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write #Needed to create a release
       packages: write
 
     steps:
