@@ -22,7 +22,10 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         unzip \
         python3 \
         python3-pip \
-        docker.io \
+        docker.io 
+
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY repoBootstrapFiles/ /repoBootstrapFiles/
@@ -48,7 +51,7 @@ RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> /home/
 # Server extension host (which does NOT source shell rc files) can find them.
 ENV PATH="/home/vscode/.bun/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
 
-RUN brew install rtk oven-sh/bun/bun claude-code
+RUN brew install rtk oven-sh/bun/bun claude-code gh
 
 
 # Install context-mode globally via Bun. This makes the `context-mode` binary
