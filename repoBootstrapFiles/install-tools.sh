@@ -64,7 +64,7 @@ echo ""
 
 # --- kubectl ---
 if needs_install kubectl "$KUBECTL_VERSION" "kubectl version --client -o json | jq -r .clientVersion.gitVersion"; then
-  log_step "kubectl ${KUBECTL_VERSION}..."
+  log_step "kubectl v${KUBECTL_VERSION}..."
   sudo curl -fsSL "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl" -o /usr/local/bin/kubectl
   sudo chmod +x /usr/local/bin/kubectl
   log_ok "kubectl $(kubectl version --client -o json | jq -r .clientVersion.gitVersion) installed"
@@ -74,8 +74,8 @@ fi
 
 # --- helm ---
 if needs_install helm "$HELM_VERSION" "helm version --short"; then
-  log_step "helm ${HELM_VERSION}..."
-  curl -fsSL "https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH}.tar.gz" | sudo tar xz --strip-components=1 -C /usr/local/bin "linux-${ARCH}/helm"
+  log_step "helm v${HELM_VERSION}..."
+  curl -fsSL "https://get.helm.sh/helm-v${HELM_VERSION}-linux-${ARCH}.tar.gz" | sudo tar xz --strip-components=1 -C /usr/local/bin "linux-${ARCH}/helm"
   sudo chmod +x /usr/local/bin/helm
   log_ok "helm $(helm version --short) installed"
 else
@@ -84,8 +84,8 @@ fi
 
 # --- talosctl ---
 if needs_install talosctl "$TALOSCTL_VERSION" "talosctl version --client --short 2>/dev/null | head -1"; then
-  log_step "talosctl ${TALOSCTL_VERSION}..."
-  sudo curl -fsSL "https://github.com/siderolabs/talos/releases/download/${TALOSCTL_VERSION}/talosctl-linux-${ARCH}" -o /usr/local/bin/talosctl
+  log_step "talosctl v${TALOSCTL_VERSION}..."
+  sudo curl -fsSL "https://github.com/siderolabs/talos/releases/download/v${TALOSCTL_VERSION}/talosctl-linux-${ARCH}" -o /usr/local/bin/talosctl
   sudo chmod +x /usr/local/bin/talosctl
   log_ok "talosctl $(talosctl version --client --short 2>/dev/null | head -1) installed"
 else
