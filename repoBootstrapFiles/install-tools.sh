@@ -65,7 +65,7 @@ echo ""
 # --- kubectl ---
 if needs_install kubectl "$KUBECTL_VERSION" "kubectl version --client -o json | jq -r .clientVersion.gitVersion"; then
   log_step "kubectl ${KUBECTL_VERSION}..."
-  sudo curl -fsSL "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl" -o /usr/local/bin/kubectl
+  sudo curl -fsSL "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl" -o /usr/local/bin/kubectl
   sudo chmod +x /usr/local/bin/kubectl
   log_ok "kubectl $(kubectl version --client -o json | jq -r .clientVersion.gitVersion) installed"
 else
