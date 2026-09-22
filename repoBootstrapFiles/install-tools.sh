@@ -94,8 +94,8 @@ fi
 
 # --- yq (mikefarah) ---
 if needs_install yq "$YQ_VERSION" "yq --version"; then
-  log_step "yq ${YQ_VERSION}..."
-  sudo curl -fsSL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${ARCH}" -o /usr/local/bin/yq
+  log_step "yq v${YQ_VERSION}..."
+  sudo curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_${ARCH}" -o /usr/local/bin/yq
   sudo chmod +x /usr/local/bin/yq
   log_ok "yq $(yq --version) installed"
 else
@@ -104,8 +104,8 @@ fi
 
 # --- cilium-cli ---
 if needs_install cilium "$CILIUM_CLI_VERSION" "cilium version --client 2>/dev/null | head -1"; then
-  log_step "cilium-cli ${CILIUM_CLI_VERSION}..."
-  curl -fsSL "https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${ARCH}.tar.gz" | sudo tar xz -C /usr/local/bin
+  log_step "cilium-cli v${CILIUM_CLI_VERSION}..."
+  curl -fsSL "https://github.com/cilium/cilium-cli/releases/download/v${CILIUM_CLI_VERSION}/cilium-linux-${ARCH}.tar.gz" | sudo tar xz -C /usr/local/bin
   sudo chmod +x /usr/local/bin/cilium
   log_ok "cilium $(cilium version --client 2>/dev/null | head -1) installed"
 else
@@ -124,8 +124,8 @@ fi
 
 # --- argocd CLI ---
 if needs_install argocd "$ARGOCD_VERSION" "argocd version --client --short 2>/dev/null | head -1"; then
-  log_step "argocd ${ARGOCD_VERSION}..."
-  sudo curl -fsSL "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARCH}" -o /usr/local/bin/argocd
+  log_step "argocd v${ARGOCD_VERSION}..."
+  sudo curl -fsSL "https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-linux-${ARCH}" -o /usr/local/bin/argocd
   sudo chmod +x /usr/local/bin/argocd
   log_ok "argocd $(argocd version --client --short 2>/dev/null | head -1) installed"
 else
@@ -134,8 +134,8 @@ fi
 
 # --- cmctl (cert-manager CLI) ---
 if needs_install cmctl "$CMCTL_VERSION" "cmctl version --client 2>/dev/null | head -1"; then
-  log_step "cmctl ${CMCTL_VERSION}..."
-  sudo curl -fsSL "https://github.com/cert-manager/cmctl/releases/download/${CMCTL_VERSION}/cmctl_linux_${ARCH}" -o /usr/local/bin/cmctl
+  log_step "cmctl v${CMCTL_VERSION}..."
+  sudo curl -fsSL "https://github.com/cert-manager/cmctl/releases/download/v${CMCTL_VERSION}/cmctl_linux_${ARCH}" -o /usr/local/bin/cmctl
   sudo chmod +x /usr/local/bin/cmctl
   log_ok "cmctl $(cmctl version --client 2>/dev/null | head -1) installed"
 else
@@ -144,8 +144,8 @@ fi
 
 # --- virtctl (KubeVirt CLI) ---
 if needs_install virtctl "$VIRTCTL_VERSION" "virtctl version --client 2>/dev/null | head -1"; then
-  log_step "virtctl ${VIRTCTL_VERSION}..."
-  sudo curl -fsSL "https://github.com/kubevirt/kubevirt/releases/download/${VIRTCTL_VERSION}/virtctl-v${VIRTCTL_VERSION#v}-linux-${ARCH}" -o /usr/local/bin/virtctl
+  log_step "virtctl v${VIRTCTL_VERSION}..."
+  sudo curl -fsSL "https://github.com/kubevirt/kubevirt/releases/download/v${VIRTCTL_VERSION}/virtctl-v${VIRTCTL_VERSION#v}-linux-${ARCH}" -o /usr/local/bin/virtctl
   sudo chmod +x /usr/local/bin/virtctl
   log_ok "virtctl $(virtctl version --client 2>/dev/null | head -1) installed"
 else
@@ -162,8 +162,8 @@ esac
 if [[ -z "$COPILOT_ARCH" ]]; then
   log_skip "copilot-cli (unsupported arch: ${ARCH})"
 elif needs_install copilot "$COPILOT_CLI_VERSION" "copilot --version"; then
-  log_step "copilot-cli ${COPILOT_CLI_VERSION}..."
-  curl -fsSL "https://github.com/github/copilot-cli/releases/download/${COPILOT_CLI_VERSION}/copilot-linux-${COPILOT_ARCH}.tar.gz" \
+  log_step "copilot-cli v${COPILOT_CLI_VERSION}..."
+  curl -fsSL "https://github.com/github/copilot-cli/releases/download/v${COPILOT_CLI_VERSION}/copilot-linux-${COPILOT_ARCH}.tar.gz" \
     | sudo tar xz -C /usr/local/bin copilot
   sudo chmod +x /usr/local/bin/copilot
   log_ok "copilot $(copilot --version 2>/dev/null || true) installed"
